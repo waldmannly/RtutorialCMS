@@ -184,3 +184,7 @@ p
 
 
 
+p1<- (ggplot(pkdataNew, aes(pkdataNew$is_legendWord, pkdataNew$attack, color=pkdataNew$generation)) +
+    geom_boxplot()  +facet_wrap(~ pkdataNew$type1) + labs(x="Is Legendary", y="Base Attack")+ geom_jitter(.05)+
+    theme_bw())
+p1
