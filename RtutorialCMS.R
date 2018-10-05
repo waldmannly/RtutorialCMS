@@ -35,6 +35,13 @@ t(matX) # transpose
 matX * t(matX)  # element wise matrix multiplication 
 matX %*% t(matX) # usually matrix mutliplication 
 
+
+matX<- matrix(c(1,2,1, 0,1,0, 0,0,1), 3)
+invmatX <- solve(matX) # get the inverse (if the matrix is singualr it will throw an error)
+matX %*% invmatX
+
+solve(matX, c(5,4,3)) # solve for an x vector by passing solve(A, b)
+
 #more operations can be found here
 #https://www.statmethods.net/advstats/matrix.html
 
@@ -102,7 +109,7 @@ Deriv(f)
 
 pkdata <- read.csv("pokemon.csv", header =T)
 
-head(pkdata) # look at the data 
+head(pkdata) # look at the data (this is the first six entries of the data frame )
 nrow(pkdata)
 ncol(pkdata)
 
@@ -111,10 +118,12 @@ summary(pkdata)
 pkdata[2:19]<- NULL
 pkdata["japanese_name"]<- NULL
 
-plot(pkdata$base_happiness, pkdata$weight_kg )
-plot(pkdata$percentage_male,pkdata$attack)
-plot(pkdata$percentage_male,pkdata$weight_kg)
+summary(pkdata)
 
+# if we want to look at just one column from a data frame 
+pkdata$name
+
+# sorting data according to a column in R 
 pkdata.sorted <- pkdata[order(pkdata$pokedex_number),]
 
 
@@ -131,6 +140,10 @@ unique(fixedtext)
 
 ## statistics in R ---- 
 
+#"base" plot 
+plot(pkdata$percentage_male,pkdata$attack)
+plot(pkdata$percentage_male,pkdata$weight_kg)
+plot(pkdata$base_happiness, pkdata$weight_kg )
 
 df = data.frame(happy = pkdata$base_happiness , weight = pkdata$weight_kg )
 
@@ -140,12 +153,34 @@ cor.test( ~ happy + weight,
           continuity = TRUE,
           conf.level = 0.95)
 
+
 ## Better graphing in R ---- 
 install.packages("ggplot2")
 library(ggplot2)
 
 ggplot(, aes(-50:50, squarePlusOne(-50:50))) + geom_line(size =2) + theme_bw()+ labs(y="x^2 +1", x="x", title= "Graph")
 
-#ggplot(pkdata, aes(pkdata$base_happiness, pkdata$weight_kg, color=(pkdata$base_happiness))) + geom_point() + geom_boxplot(aes(unique(pkdata$base_happiness)))
+
+p = (ggplot(pkdata, aes(pkdata$is_legendary, pkdata$base_total)) + geom_boxplot() +
+       labs(title='Sum of Total Stats Separated by\n Type and Legendary Status') +
+       facet_wrap(~ pkdata$type1) + 
+       theme_classic())
+p
+
+
+converted <- lapply(pkdata$is_legendary, function(x){
+if (x == 1){y <- "yes"}
+if (x == 0){y <- "no"}
+return(y)
+})
+
+pkdataNew <- data.frame(pkdata, is_legendWord = unlist(converted)) 
+
+p = (ggplot(pkdataNew, aes(pkdataNew$is_legendWord, pkdataNew$base_total)) + geom_boxplot() +
+       labs(title='Sum of Total Stats Separated by\n Type and Legendary Status') +
+       facet_wrap(~ pkdataNew$type1) + labs(x="Is Legendary", y="Total Base Statistics")+
+       theme_classic())
+p
+
 
 
