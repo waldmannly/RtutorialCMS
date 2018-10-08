@@ -1,3 +1,7 @@
+# meeting sign in 
+#https://bit.ly/2DYzhBa
+
+
 
 ## Basics ----
 
@@ -11,6 +15,8 @@ x %% 2  # mod
 y <- 1:10
 y^2 
 sum(y)
+
+seq(1,10,2)
 
 getwd()
 setwd('../Desktop/RtutorialCMS')
@@ -186,5 +192,6 @@ p
 
 p1<- (ggplot(pkdataNew, aes(pkdataNew$is_legendWord, pkdataNew$attack, color=pkdataNew$generation)) +
     geom_boxplot()  +facet_wrap(~ pkdataNew$type1) + labs(x="Is Legendary", y="Base Attack")+ geom_jitter(.05)+
-    theme_bw())
+    theme_bw(size=20))
 p1
+
